@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 
 export default function Home() {
-  const test = 'test';
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
       <h1>Lucifer.ai</h1>
