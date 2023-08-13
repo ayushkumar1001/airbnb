@@ -1,11 +1,11 @@
-import "./globals.css";
-import { Inter } from "next/font/google";
+import './globals.css';
+import { Inter } from 'next/font/google';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: "Lucifer.ai",
-  description: "An open source AI for the masses",
+  title: 'Lucifer.ai',
+  description: 'An open source AI for the masses',
 };
 
 export default function RootLayout({ children }) {
