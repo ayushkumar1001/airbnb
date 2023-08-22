@@ -1,19 +1,21 @@
-name: Codeball
+name: AI Code Review
+
 on:
-  pull_request: {}
-  pull_request_review_comment:
-    types: [created, edited]
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
-  codeball_job:
+  ai_code_review:
     runs-on: ubuntu-latest
-    name: Codeball
+
     steps:
-      - name: Codeball
-        uses: sturdy-dev/codeball-action@v2
-        with:
-          # For all configuration options see https://github.com/sturdy-dev/codeball-action/blob/v2/action.yml
-          approvePullRequests: 'true'
-          labelPullRequestsWhenApproved: 'true'
-          labelPullRequestsWhenReviewNeeded: 'false'
-          failJobsWhenReviewNeeded: 'false'
+    - name: AI Code Review
+      uses: AleksandrFurmenkovOfficial/ai-code-review@v0.2.2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }} # or your token with access to PRs, read for files and write for comments
+        openai_api_key: ${{ secrets.OPENAI_API_KEY }} # You should have access to gpt-4-0613
+        owner: ${{ github.repository_owner }}
+        repo: ${{ github.event.repository.name }}
+        pr_number: ${{ github.event.number }}
+        #file_extensions: ".py,.js,.html" # for example
+        #exclude_paths: "test/,docs/"     # for example
