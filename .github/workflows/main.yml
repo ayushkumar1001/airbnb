@@ -1,21 +1,22 @@
-name: AI Code Review
+name: AI Code Reviewer
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
-
+    types:
+      - opened
+      - synchronize
+permissions: write-all
 jobs:
-  ai_code_review:
+  review:
     runs-on: ubuntu-latest
-
     steps:
-    - name: AI Code Review
-      uses: AleksandrFurmenkovOfficial/ai-code-review@v0.2.2
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }} # or your token with access to PRs, read for files and write for comments
-        openai_api_key: ${{ secrets.OPENAI_API_KEY }} # You should have access to gpt-4-0613
-        owner: ${{ github.repository_owner }}
-        repo: ${{ github.event.repository.name }}
-        pr_number: ${{ github.event.number }}
-        #file_extensions: ".py,.js,.html" # for example
-        #exclude_paths: "test/,docs/"     # for example
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: AI Code Reviewer
+        uses: your-username/ai-code-reviewer@main
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_MODEL: "gpt-3.5-turbo" # Optional: defaults to "gpt-4"
+          exclude: "**/*.json, **/*.md" # Optional: exclude patterns separated by commas
