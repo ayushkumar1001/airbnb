@@ -1,23 +1,19 @@
-name: AI Code Reviewer
-
+name: Codeball
 on:
-  pull_request:
-    types:
-      - opened
-      - synchronize
-permissions: write-all
-jobs:
-  review:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
+  pull_request: {}
+  pull_request_review_comment:
+    types: [created, edited]
 
-      - name: AI Code Review Action
-        uses: freeedcom/ai-codereviewer@v2.6.0
-    
+jobs:
+  codeball_job:
+    runs-on: ubuntu-latest
+    name: Codeball
+    steps:
+      - name: Codeball
+        uses: sturdy-dev/codeball-action@v2
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_API_MODEL: "gpt-3.5-turbo" # Optional: defaults to "gpt-4"
-          exclude: "**/*.json, **/*.md" # Optional: exclude patterns separated by commas
+          # For all configuration options see https://github.com/sturdy-dev/codeball-action/blob/v2/action.yml
+          approvePullRequests: 'true'
+          labelPullRequestsWhenApproved: 'true'
+          labelPullRequestsWhenReviewNeeded: 'false'
+          failJobsWhenReviewNeeded: 'false'
