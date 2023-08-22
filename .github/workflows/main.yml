@@ -14,9 +14,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: AI Code Reviewer
-        uses: Luciferxgkp/airbnb-clone@main
+        uses: Luciferxgkp/ai-code-reviewer@main
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_API_MODEL: 'gpt-4' # Optional: defaults to "gpt-4"
-          exclude: '**/*.json, **/*.md' # Optional: exclude patterns separated by commas
+          OPENAI_API_MODEL: "gpt-4" # Optional: defaults to "gpt-4"
+          exclude: "**/*.json, **/*.md" # Optional: exclude patterns separated by commas
