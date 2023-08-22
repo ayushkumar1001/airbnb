@@ -11,7 +11,7 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-```
+```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
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
