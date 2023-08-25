@@ -10,6 +10,8 @@ const Button = ({
 }) => {
   return (
     <button
+      onClick={onClick}
+      disabled={disabled}
       className={`
         relative
         disabled:opacity-70

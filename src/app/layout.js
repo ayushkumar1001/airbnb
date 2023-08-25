@@ -1,5 +1,5 @@
 import GlobalContainer from '@/components/global-container';
-import Modal from '@/components/modal/modal';
+import RegisterModal from '@/components/modal/registerModal';
 import Navbar from '@/components/navbar/navbar';
 import { Nunito } from 'next/font/google';
 import './globals.css';
@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <GlobalContainer>
         <Navbar />
-        <Modal isOpen={true} title="Login Form" actionLabel="Login" />
+        <RegisterModal />
       </GlobalContainer>
       <body className={font.className}>{children}</body>
     </html>
