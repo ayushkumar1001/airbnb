@@ -1,9 +1,11 @@
+import ToasterProvider from '@/app/providers/ToasterProvider';
 import GlobalContainer from '@/components/global-container';
+import LoginModal from '@/components/modal/loginModal';
 import RegisterModal from '@/components/modal/registerModal';
 import Navbar from '@/components/navbar/navbar';
 import { Nunito } from 'next/font/google';
 import './globals.css';
-import ToasterProvider from '@/app/providers/ToasterProvider';
+import getCurrentUser from '@/app/actions/getCurrentUser';
 
 const font = Nunito({ subsets: ['latin'] });
 
@@ -12,13 +14,15 @@ export const metadata = {
   description: 'Airbnb Clone',
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const currentUser = await getCurrentUser();
   return (
     <html lang="en">
       <GlobalContainer>
-        <ToasterProvider/>
-        <Navbar />
+        <ToasterProvider />
+        <Navbar currentUser={currentUser} />
         <RegisterModal />
+        <LoginModal />
       </GlobalContainer>
       <body className={font.className}>{children}</body>
     </html>

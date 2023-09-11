@@ -5,7 +5,7 @@ import Logo from '@/components/logo';
 import Search from '@/components/navbar/search';
 import UserMenu from '@/components/navbar/user-menu';
 
-const Navbar = () => {
+const Navbar = ({ currentUser }) => {
   return (
     <div className="fixed w-full bg-white shadow-sm">
       <div className="py-4 border-b-[1px]">
@@ -13,7 +13,7 @@ const Navbar = () => {
           <div className="flex items-center justify-between gap-3 md:gap-0">
             <Logo />
             <Search />
-            <UserMenu />
+            <UserMenu currentUser={currentUser} />
           </div>
         </Container>
       </div>
