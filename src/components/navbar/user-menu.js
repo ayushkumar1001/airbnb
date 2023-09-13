@@ -1,18 +1,30 @@
 'use client';
 import Avatar from '@/components/avatar';
+import MenuItem from '@/components/navbar/menu-item';
+import useLoginModal from '@/hooks/useLoginModal';
+import useRegisterModal from '@/hooks/useRegisterModal';
+import useRentModal from '@/hooks/useRentModal';
+import { signOut } from 'next-auth/react';
 import { useCallback, useState } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
-import MenuItem from '@/components/navbar/menu-item';
-import useRegisterModal from '@/hooks/useRegisterModal';
-import useLoginModal from '@/hooks/useLoginModal';
-import { signOut } from 'next-auth/react';
+
 const UserMenu = ({ currentUser }) => {
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
+  const rentModal = useRentModal();
+
   const [isOpen, setIsOpen] = useState(false);
+
   const toggleMenu = useCallback(() => {
     setIsOpen((prev) => !prev);
   }, []);
+
+  const onRent = useCallback(() => {
+    if (!currentUser) {
+      return loginModal.onOpen();
+    }
+    rentModal.onOpen();
+  }, [currentUser, loginModal, rentModal]);
   return (
     <div
       className="
@@ -21,6 +33,7 @@ const UserMenu = ({ currentUser }) => {
     >
       <div className="flex items-center gap-3">
         <div
+          onClick={onRent}
           className="
             hidden
              md:block
@@ -88,7 +101,7 @@ const UserMenu = ({ currentUser }) => {
                 <MenuItem label="My Favorites" onClick={() => {}} />
                 <MenuItem label="My Reasevations" onClick={() => {}} />
                 <MenuItem label="My Properties" onClick={() => {}} />
-                <MenuItem label="Airbnb my home" onClick={() => {}} />
+                <MenuItem label="Airbnb my home" onClick={rentModal.onOpen} />
                 <hr />
                 <MenuItem label="Log Out" onClick={() => signOut()} />
               </>
