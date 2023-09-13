@@ -4,6 +4,7 @@ import Container from '@/components/container';
 import Logo from '@/components/logo';
 import Search from '@/components/navbar/search';
 import UserMenu from '@/components/navbar/user-menu';
+import Categories from '@/components/navbar/categories';
 
 const Navbar = ({ currentUser }) => {
   return (
@@ -17,6 +18,7 @@ const Navbar = ({ currentUser }) => {
           </div>
         </Container>
       </div>
+      <Categories />
     </div>
   );
 };

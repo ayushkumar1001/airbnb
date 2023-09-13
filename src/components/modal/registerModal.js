@@ -5,16 +5,18 @@ import Input from '@/components/inputs/input';
 import Modal from '@/components/modal/modal';
 import useRegisterModal from '@/hooks/useRegisterModal';
 import axios from 'axios';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { AiFillGithub } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import Button from '../button';
 import { signIn } from 'next-auth/react';
+import useLoginModal from '@/hooks/useLoginModal';
 
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
+  const LoginModal = useLoginModal();
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -42,6 +44,11 @@ const RegisterModal = () => {
         setLoading(false);
       });
   };
+
+  const toggleModal = useCallback(() => {
+    registerModal.onClose();
+    LoginModal.onOpen();
+  }, [registerModal, LoginModal]);
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading title="Welcome to Airbnb" subtitle="Create an account!" />
@@ -97,7 +104,7 @@ const RegisterModal = () => {
           <div>Already have an account?</div>
           <div
             className="text-neutral-500 cursor-pointer hover:underline"
-            onClick={registerModal.onClose}
+            onClick={toggleModal}
           >
             Login
           </div>

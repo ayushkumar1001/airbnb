@@ -1,22 +1,23 @@
 'use client';
 
-import { signIn } from 'next-auth/react';
 import Heading from '@/components/heading';
 import Input from '@/components/inputs/input';
 import Modal from '@/components/modal/modal';
 import useLoginModal from '@/hooks/useLoginModal';
-import axios from 'axios';
-import { useState } from 'react';
-import { set, useForm } from 'react-hook-form';
+import useRegisterModal from '@/hooks/useRegisterModal';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useCallback, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { AiFillGithub } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import Button from '../button';
-import { useRouter } from 'next/navigation';
 
 const LoginModal = () => {
   const router = useRouter();
   const loginModal = useLoginModal();
+  const registerModal = useRegisterModal();
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -47,6 +48,11 @@ const LoginModal = () => {
       }
     });
   };
+
+  const toggleModal = useCallback(() => {
+    loginModal.onClose();
+    registerModal.onOpen();
+  }, [loginModal, registerModal]);
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading title="Welcome back" subtitle="Login to your account!" />
@@ -90,12 +96,12 @@ const LoginModal = () => {
       />
       <div className="text-neutral-500 text-center mt-4 font-light">
         <div className="flex items-center justify-center gap-2">
-          <div>Already have an account?</div>
+          <div>First time using Airbnb?</div>
           <div
             className="text-neutral-500 cursor-pointer hover:underline"
-            onClick={loginModal.onClose}
+            onClick={toggleModal}
           >
-            Login
+            Create an account
           </div>
         </div>
       </div>
