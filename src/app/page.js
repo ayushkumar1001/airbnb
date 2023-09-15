@@ -1,9 +1,48 @@
-export default function Home() {
+import getListings from '@/app/actions/getListings';
+import Container from '@/components/container';
+import EmptyState from '@/components/empty-state';
+import GlobalContainer from '@/components/global-container';
+import ListingCard from '@/components/listings/listing-card';
+import getCurrentUser from './actions/getCurrentUser';
+
+export default async function Home() {
+  const listings = await getListings();
+  const currentUser = await getCurrentUser();
+
+  if (listings.length === 0) {
+    return (
+      <GlobalContainer>
+        <EmptyState showReset />
+      </GlobalContainer>
+    );
+  }
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
-      <h1 className="text-3xl font-bold text-gray-800">
-        Welcome to the airbnb clone
-      </h1>
-    </div>
+    <GlobalContainer>
+      <Container>
+        <div
+          className="
+          pt-24
+          grid
+          grid-cols-1
+          sm:grid-cols-2
+          md:grid-cols-3
+          lg:grid-cols-4
+          xl:grid-cols-5
+          2xl:grid-cols-6
+          gap-8
+        "
+        >
+          {listings.map((listing) => {
+            return (
+              <ListingCard
+                currentUser={currentUser}
+                key={listing.id}
+                data={listing}
+              />
+            );
+          })}
+        </div>
+      </Container>
+    </GlobalContainer>
   );
 }

@@ -19,14 +19,16 @@ export default async function RootLayout({ children }) {
   const currentUser = await getCurrentUser();
   return (
     <html lang="en">
-      <GlobalContainer>
-        <ToasterProvider />
-        <Navbar currentUser={currentUser} />
-        <RegisterModal />
-        <LoginModal />
-        <RentModal />
-      </GlobalContainer>
-      <body className={font.className}>{children}</body>
+      <body className={font.className}>
+        <GlobalContainer>
+          <ToasterProvider />
+          <Navbar currentUser={currentUser} />
+          <RegisterModal />
+          <LoginModal />
+          <RentModal />
+        </GlobalContainer>
+        <div className="pb-20 pt-28">{children}</div>
+      </body>
     </html>
   );
 }
