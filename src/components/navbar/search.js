@@ -1,8 +1,55 @@
 'use client';
+import useCountries from '@/hooks/useCountries';
+import useSearchModal from '@/hooks/useSearchModal';
+import { differenceInDays } from 'date-fns';
+import { useSearchParams } from 'next/navigation';
+import { useMemo } from 'react';
 import { BiSearch } from 'react-icons/bi';
 const Search = () => {
+  const searchModal = useSearchModal();
+  const params = useSearchParams();
+  const { getByValue } = useCountries();
+
+  const locationValue = params.get('locationValue');
+  const startDate = params.get('startDate');
+  const endDate = params.get('endDate');
+  const guestCount = params.get('guestCount');
+
+  const locationLabel = useMemo(() => {
+    if (!locationValue) {
+      return 'Anywhere';
+    }
+
+    return getByValue(locationValue)?.label;
+  }, [locationValue, getByValue]);
+
+  const durationLabel = useMemo(() => {
+    if (!startDate || !endDate) {
+      return 'Any Week';
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    let diff = differenceInDays(end, start);
+
+    if (diff === 0) {
+      diff = 1;
+    }
+
+    return `${diff} Days`;
+  }, [startDate, endDate]);
+
+  const guestLabel = useMemo(() => {
+    if (!guestCount) {
+      return 'Add Guests';
+    }
+
+    return `${guestCount} Guests`;
+  }, [guestCount]);
+
   return (
     <div
+      onClick={searchModal.onOpen}
       className="
         border-[1px]
         w-full
@@ -29,7 +76,7 @@ const Search = () => {
                 font-semibold
             "
         >
-          Anywhere
+          {locationLabel}
         </div>
         <div
           className="
@@ -43,7 +90,7 @@ const Search = () => {
                 text-center
             "
         >
-          Any Week
+          {durationLabel}
         </div>
         <div
           className="
@@ -56,7 +103,7 @@ const Search = () => {
                 gap-3
             "
         >
-          <div className="hidden md:block">Add Guests</div>
+          <div className="hidden md:block">{guestLabel}</div>
           <div
             className="
             p-2
