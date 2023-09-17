@@ -4,6 +4,7 @@ import EmptyState from '@/components/empty-state';
 import GlobalContainer from '@/components/global-container';
 import ListingCard from '@/components/listings/listing-card';
 import getCurrentUser from './actions/getCurrentUser';
+export const dynamic = 'auto';
 
 const Home = async ({ searchParams }) => {
   const listings = await getListings(searchParams);
