@@ -1,12 +1,104 @@
 'use client';
 import Container from '@/components/container';
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import ListingHead from './listing-head';
 import ListingInfo from './listing-info';
+import useLoginModal from '@/hooks/useLoginModal';
+import { useRouter } from 'next/navigation';
+import {
+  differenceInCalendarDays,
+  differenceInDays,
+  eachDayOfInterval,
+  setDate,
+} from 'date-fns';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import ListingReservation from './listing-reservation';
 
 const { categories } = require('@/components/navbar/categories');
 
-const ListingClient = ({ listing, currentUser, reservations }) => {
+const initialDateRange = {
+  startDate: new Date(),
+  endDate: new Date(),
+  key: 'selection',
+};
+
+const ListingClient = ({ listing, currentUser, reservations = [] }) => {
+  const loginModal = useLoginModal();
+  const router = useRouter();
+
+  const disabledDates = useMemo(() => {
+    let dates = [];
+
+    reservations.forEach((reservation) => {
+      const range = eachDayOfInterval({
+        start: new Date(reservation.startDate),
+        end: new Date(reservation.endDate),
+      });
+
+      dates = [...dates, ...range];
+    });
+
+    return dates;
+  }, [reservations]);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [dateRange, setDateRange] = useState(initialDateRange);
+  const [totalPrice, setTotalPrice] = useState(listing.price);
+
+  const onCreateReservation = useCallback(async () => {
+    if (!currentUser) {
+      return loginModal.open();
+    }
+
+    setIsLoading(true);
+
+    axios
+      .post('/api/reservations', {
+        totalPrice: totalPrice,
+        startDate: dateRange.startDate,
+        endDate: dateRange.endDate,
+        listingId: listing.id,
+      })
+      .then(() => {
+        toast.success('Reservation created successfully');
+        setDateRange(initialDateRange);
+
+        router.refresh();
+      })
+      .catch((error) => {
+        toast.error('Something went wrong');
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [
+    currentUser,
+    dateRange,
+    listing?.id,
+    router,
+    currentUser,
+    loginModal,
+    totalPrice,
+  ]);
+
+  useEffect(() => {
+    if (!dateRange.startDate || !dateRange.endDate) {
+      return;
+    }
+
+    const dayCount = differenceInCalendarDays(
+      dateRange.endDate,
+      dateRange.startDate
+    );
+
+    if (dayCount && listing.price) {
+      setTotalPrice(dayCount * listing.price);
+    } else {
+      setTotalPrice(listing.price);
+    }
+  }, [dateRange, listing.price]);
+
   const category = useMemo(() => {
     return categories.find((category) => category.label === listing.category);
   }, [listing.category]);
@@ -38,6 +130,24 @@ const ListingClient = ({ listing, currentUser, reservations }) => {
               bathroomCount={listing.bathroomCount}
               locationValue={listing.locationValue}
             />
+            <div
+              className="
+            order-first
+            mb-10
+            md:order-last
+            md:col-span-3
+           "
+            >
+              <ListingReservation
+                price={listing.price}
+                totalPrice={totalPrice}
+                onChangeDate={(value) => setDateRange(value)}
+                dateRange={dateRange}
+                onSubmit={onCreateReservation}
+                disabled={isLoading}
+                disabledDates={disabledDates}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -3,10 +3,12 @@ import getListingById from '@/app/actions/getListingById';
 import EmptyState from '@/components/empty-state';
 import GlobalContainer from '@/components/global-container';
 import ListingClient from './listing-client';
+import getReservations from '@/app/actions/getReservations';
 
 const listingPage = async ({ params }) => {
   const listing = await getListingById(params);
   const currentUser = await getCurrentUser();
+  const reservations = await getReservations(params);
 
   if (!listing) {
     return (
@@ -17,7 +19,11 @@ const listingPage = async ({ params }) => {
   }
   return (
     <GlobalContainer>
-      <ListingClient listing={listing} currentUser={currentUser} />
+      <ListingClient
+        listing={listing}
+        currentUser={currentUser}
+        reservations={reservations}
+      />
     </GlobalContainer>
   );
 };
