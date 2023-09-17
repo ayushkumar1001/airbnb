@@ -5,13 +5,7 @@ import GlobalContainer from '@/components/global-container';
 import ListingCard from '@/components/listings/listing-card';
 import getCurrentUser from './actions/getCurrentUser';
 
-export const dynamic = 'auto';
-export const dynamicParams = true;
-export const revalidate = false;
-export const fetchCache = 'auto';
-export const runtime = 'nodejs';
-export const preferredRegion = 'auto';
-export const maxDuration = 5;
+export const dynamic = 'force-dynamic';
 
 const Home = async ({ searchParams }) => {
   const listings = await getListings(searchParams);
