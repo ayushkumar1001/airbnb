@@ -5,10 +5,12 @@ import useLoginModal from '@/hooks/useLoginModal';
 import useRegisterModal from '@/hooks/useRegisterModal';
 import useRentModal from '@/hooks/useRentModal';
 import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
 
 const UserMenu = ({ currentUser }) => {
+  const router = useRouter();
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const rentModal = useRentModal();
@@ -97,7 +99,10 @@ const UserMenu = ({ currentUser }) => {
           >
             {currentUser ? (
               <>
-                <MenuItem label="My Trips" onClick={() => {}} />
+                <MenuItem
+                  label="My Trips"
+                  onClick={() => router.push('/trips')}
+                />
                 <MenuItem label="My Favorites" onClick={() => {}} />
                 <MenuItem label="My Reasevations" onClick={() => {}} />
                 <MenuItem label="My Properties" onClick={() => {}} />
