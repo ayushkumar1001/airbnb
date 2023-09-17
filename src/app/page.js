@@ -5,8 +5,8 @@ import GlobalContainer from '@/components/global-container';
 import ListingCard from '@/components/listings/listing-card';
 import getCurrentUser from './actions/getCurrentUser';
 
-export default async function Home() {
-  const listings = await getListings();
+const Home = async ({ searchParams }) => {
+  const listings = await getListings(searchParams);
   const currentUser = await getCurrentUser();
 
   if (listings.length === 0) {
@@ -45,4 +45,6 @@ export default async function Home() {
       </Container>
     </GlobalContainer>
   );
-}
+};
+
+export default Home;
