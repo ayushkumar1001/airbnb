@@ -19,7 +19,7 @@ const useFavorites = ({ listingId, currentUser }) => {
       e.stopPropagation();
 
       if (!currentUser) {
-        return loginModal.open();
+        return loginModal.onOpen();
       }
 
       try {

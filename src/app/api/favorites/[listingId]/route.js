@@ -1,6 +1,7 @@
 import getCurrentUser from '@/app/actions/getCurrentUser';
 import prisma from '@/libs/prismadb';
 import { NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
 
 export async function POST(request, { params }) {
   const currentUser = await getCurrentUser();
@@ -34,6 +35,7 @@ export async function POST(request, { params }) {
 export async function DELETE(request, { params }) {
   const currentUser = await getCurrentUser();
 
+  console.log(currentUser);
   if (!currentUser) {
     return NextResponse.error();
   }
