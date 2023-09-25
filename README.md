@@ -42,7 +42,7 @@ To run this project locally, follow these steps:
 2.  Install the dependencies:
 
     ```bash
-     npm install
+     yarn install
     ```
 
 3.  Create a `.env` file in the root directory of the project and add the following environment variables:
@@ -64,7 +64,7 @@ To run this project locally, follow these steps:
 4.  Run the development server:
 
         ```bash
-        npm run dev
+        yarn run dev
         ```
 
 5.  Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
