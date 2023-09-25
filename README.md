@@ -24,8 +24,7 @@ Welcome to the Airbnb Clone project! This web application allows users to list t
 - Email Notifications for Booking and Account Updates
 
 ## Demo
-
-[Link to Live Demo](https://your-demo-link.com)
+[Screencast from 25-09-23 08:07:25 PM IST.webm](https://github.com/Luciferxgkp/airbnb-clone/assets/76958987/70d8b8a4-5065-4e72-8eac-c5a3eeffce89)
 
 You can check out the live demo of the Airbnb Clone to explore its features and functionality.
 
