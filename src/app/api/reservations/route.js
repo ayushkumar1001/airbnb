@@ -1,9 +1,13 @@
 import getCurrentUser from '@/app/actions/getCurrentUser';
 import prisma from '@/libs/prismadb';
+import axios from 'axios';
+import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
 export async function POST(request) {
+  const headersList = headers();
+  const fullUrl = headersList.get('referer') || '';
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {

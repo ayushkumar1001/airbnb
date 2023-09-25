@@ -1,18 +1,13 @@
 'use client';
 import Container from '@/components/container';
+import useLoginModal from '@/hooks/useLoginModal';
+import axios from 'axios';
+import { differenceInCalendarDays, eachDayOfInterval } from 'date-fns';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import toast from 'react-hot-toast';
 import ListingHead from './listing-head';
 import ListingInfo from './listing-info';
-import useLoginModal from '@/hooks/useLoginModal';
-import { useRouter } from 'next/navigation';
-import {
-  differenceInCalendarDays,
-  differenceInDays,
-  eachDayOfInterval,
-  setDate,
-} from 'date-fns';
-import axios from 'axios';
-import toast from 'react-hot-toast';
 import ListingReservation from './listing-reservation';
 
 const { categories } = require('@/components/navbar/categories');
@@ -24,6 +19,8 @@ const initialDateRange = {
 };
 
 const ListingClient = ({ listing, currentUser, reservations = [] }) => {
+  const params = useSearchParams();
+  const pathName = usePathname();
   const loginModal = useLoginModal();
   const router = useRouter();
 
@@ -54,6 +51,32 @@ const ListingClient = ({ listing, currentUser, reservations = [] }) => {
     setIsLoading(true);
 
     axios
+      .post('/api/stripe', {
+        totalPrice: totalPrice,
+        title: listing.title,
+      })
+      .then((res) => {
+        window.open(res.data, '_self');
+      })
+      .finally(() => {
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        toast.error('Something went wrong');
+      });
+  }, [
+    currentUser,
+    dateRange,
+    listing?.id,
+    router,
+    currentUser,
+    loginModal,
+    totalPrice,
+  ]);
+
+  const onPaymentSuccess = useCallback(async () => {
+    setIsLoading(true);
+    axios
       .post('/api/reservations', {
         totalPrice: totalPrice,
         startDate: dateRange.startDate,
@@ -72,16 +95,18 @@ const ListingClient = ({ listing, currentUser, reservations = [] }) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [
-    currentUser,
-    dateRange,
-    listing?.id,
-    router,
-    currentUser,
-    loginModal,
-    totalPrice,
-  ]);
+  }, [dateRange, listing?.id, router, currentUser, loginModal, totalPrice]);
 
+  useEffect(() => {
+    const sucess = params?.get('sucess');
+
+    if (sucess) {
+      onPaymentSuccess();
+    } else {
+      toast.error('Payment failed');
+      router.push(pathName);
+    }
+  }, []);
   useEffect(() => {
     if (!dateRange.startDate || !dateRange.endDate) {
       return;
