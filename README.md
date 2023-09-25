@@ -46,7 +46,7 @@ To run this project locally, follow these steps:
 
 3.  Create a `.env` file in the root directory of the project and add the following environment variables:
 
-        ```bash
+    ```bash
         DATABASE_URL="mongodb+srv://<username>:<password>@cluster0.hx8dsng.mongodb.net/<database>"
         NEXTAUTH_SECRET="NEXTAUTH_SECRET"
         GITHUB_ID=your-github-id
@@ -58,13 +58,13 @@ To run this project locally, follow these steps:
         NODEMAILER_EMAIL="your-email"
         STRIPE_SECRET_KEY="your-stripe-secret-key"
         NEXT_PUBLIC_APP_URL="http://localhost:3000" # or your production URL
-        ```
+    ```
 
 4.  Run the development server:
 
-        ```bash
+    ```bash
         yarn run dev
-        ```
+    ```
 
 5.  Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
