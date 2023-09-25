@@ -99,10 +99,11 @@ const ListingClient = ({ listing, currentUser, reservations = [] }) => {
 
   useEffect(() => {
     const sucess = params?.get('sucess');
+    const canceled = params?.get('canceled');
 
     if (sucess) {
       onPaymentSuccess();
-    } else {
+    } else if (canceled) {
       toast.error('Payment failed');
       router.push(pathName);
     }
