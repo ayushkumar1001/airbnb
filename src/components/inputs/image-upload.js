@@ -16,7 +16,7 @@ const ImageUpload = ({ onChange, value }) => {
   return (
     <CldUploadWidget
       onUpload={handleUpload}
-      uploadPreset="nep6iyvp"
+      uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}
       options={{
         maxFiles: 1,
       }}
